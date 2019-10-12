@@ -1,0 +1,79 @@
+<script type="text/javascript">
+var http = require('http'); 
+
+function send_canbus()
+{
+    //window.alert("hello test");
+
+    if($("#command_canbus").val() == "") 
+    {   $("#status_canbus").html("error : command is empty")
+        return;
+    }
+    const options = {
+        hostname: 'localhost',
+        port: 8080,
+        path: '/do?action=ceci&param=cela',
+        method: 'GET'
+    }
+    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + $("#command_canbus").val()+ "&param=" + $("#param_canbus").val()
+    console.log(options.path)
+    const req = http.request(options, res => {
+        console.log(`statusCode: ${res.statusCode}`)
+        $("#status_canbus").html(`Status code  : ${res.statusCode} ${res.statusMessage} `)
+        res.on('data', message => {
+          console.log("data :" + message)
+          $("#response_canbus").html(" " + message)
+        })
+    })
+    
+    req.on('error', error => {
+        console.error(error)
+        $("#status_canbus").html(error)
+    })
+    
+    req.end()
+}
+
+</script>
+
+<div>
+    <br>
+    Klebar CAN bus control
+    <br> <br>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">node</span>
+      </div>
+      <input id="node_canbus"  type="text" class="form-control" aria-label="Command" aria-describedby="inputGroup-sizing-default">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">command</span>
+      </div>
+      <input id="command_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
+    </div>    
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">parameter</span>
+      </div>
+      <input id="param_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
+    </div>
+
+    <br><br>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text">Status</span>
+      </div>
+      <textarea id="status_canbus" readonly class="form-control" aria-label="Status"></textarea>
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text">Response</span>
+      </div>
+      <textarea id="response_canbus" readonly class="form-control" aria-label="Response"></textarea>
+    </div>
+
+    <br><br>
+    <button type="button" class="btn btn-light" onclick="send_canbus()"> Send CAN bus </button>
+    <br>
+  </div>

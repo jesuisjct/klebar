@@ -1,0 +1,3 @@
+run_klebar.o: run_klebar.cpp path.h canbus.h ../cpp-httplib/httplib.h
+path.o: path.cpp path.h
+canbus.o: canbus.cpp canbus.h
