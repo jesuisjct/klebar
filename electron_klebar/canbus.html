@@ -3,7 +3,21 @@ var http = require('http');
 
 // test commit
 
+var $dropDownItems = $('#command_dropdown').children();
 
+    $dropDownItems.on('click', function() {
+    $("#command_canbus").val($dropDownItems.index(this))
+  //console.log('index: ', $dropDownItems.index(this), 'text: ', this.textContent)
+  })
+
+
+function copy_cmd()
+{
+  var x = $("#command_dropdown").SelectedIndex
+  $("#command_canbus").val(x)
+  window.alert(x)
+
+}
 function send_canbus()
 {
     if($("#command_canbus").val() == "") 
@@ -49,7 +63,14 @@ function send_canbus()
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">command</span>
+        <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+        <div id="command_dropdown" class="dropdown-menu">
+          <button class="dropdown-item" href="#">Action</button>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+          <div role="separator" class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Separated link</a>
+        </div>
       </div>
       <input id="command_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
     </div>    
