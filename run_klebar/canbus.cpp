@@ -1,5 +1,11 @@
 #include "canbus.h"
 
+CCanbus::CCanbus()
+{
+    socket_can = 0;
+    is_connected = false;
+}
+
 int CCanbus::open_canbus(std::string port)
 {
     struct ifreq        ifr;
@@ -17,7 +23,8 @@ int CCanbus::open_canbus(std::string port)
     fcntl(socket_can, F_SETFL, O_NONBLOCK);
 
     if (bind(socket_can, (struct sockaddr *)&addr, sizeof(addr)) < 0)  return (-1);
-    
+    is_connected = true;
+    printf("canbus opened\n");
     return 0;
 }
 
@@ -51,6 +58,20 @@ void CCanbus::close_canbus()
 std::string CCanbus::execute_command_can(std::string node, std::string command, std::string param)
 {
     //std::cout << "node" << node;
-    printf("execute can command id=%s command=%s\n", node.c_str(), command.c_str());
-    return "can bus comman executed";
+    if(!is_connected)   open_canbus("can0");
+    printf("execute can command node=%s command=%s\n", node.c_str(), command.c_str());
+    frame.can_id = std::stoi(node) << 5 + std::stoi(command);
+    frame.can_dlc = 8;
+    int signal = std::stoi(param);
+    frame.data[0] = (uint32_t) signal;
+	frame.data[1] = (uint32_t) signal >> 8;
+	frame.data[2] = (uint32_t) signal >> 16;
+	frame.data[3] = (uint32_t) signal >> 24;
+	frame.data[4] = (uint32_t) 0;
+	frame.data[5] = (uint32_t) 0;
+	frame.data[6] = (uint32_t) 0;
+	frame.data[7] = (uint32_t) 0;
+    int ret = write(socket_can, &frame, sizeof(struct can_frame));
+    if (ret != sizeof(struct can_frame))    return "erreur"; //(std::string("Error executing CAN command ") + command);
+    else                                    return "ok"; //(std::string("CAN command ") + command + " executed");
 }
