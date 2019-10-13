@@ -5,9 +5,7 @@ var http = require('http');
 var $dropDownItems = $('#command_dropdown').children();
 
     $dropDownItems.on('click', function() {
-      let dropindex = $dropDownItems.index(this)
-      let dropval = $dropDownItems[dropindex].innerHTML
-      $("#command_canbus").val(dropval)
+      $("#command_canbus").val($(this).html())
   })
 
 
