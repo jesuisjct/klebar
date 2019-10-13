@@ -16,11 +16,15 @@
 <body>
   <nav class="nav nav-tabs navbar-expand-sm navbar-light bg-light">
     <a href="#" class="navbar-brand">Klebar</a>
-    <a class="nav-item nav-link active" href="#command" data-toggle="tab">Command</a>
+    <a class="nav-item nav-link active" href="#config" data-toggle="tab">Configuration</a>
+    <a class="nav-item nav-link " href="#command" data-toggle="tab">Command</a>
     <a class="nav-item nav-link" href="#canbus" data-toggle="tab">CAN bus</a>
   </nav>
     <div class="tab-content">
-      <div class="tab-pane active" id="command">
+        <div class="tab-pane active" id="config">
+            <div id="div_config"> </div>
+        </div>
+      <div class="tab-pane" id="command">
           <div id="div_command"> </div>
       </div>
       <div class="tab-pane" id="canbus">
@@ -34,7 +38,8 @@
 
     <script type="text/javascript">
       window.onload = function()
-      { $("#div_command").load("command.html")
+      { $("#div_config").load("config.html")
+        $("#div_command").load("command.html")
         $("#div_canbus").load("canbus.html")
       }
     </script>

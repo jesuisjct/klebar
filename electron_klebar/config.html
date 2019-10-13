@@ -1,0 +1,73 @@
+<script type="text/javascript">
+    var http = require('http'); 
+
+    function try_connection()
+    {
+        $("#config_status").html("")
+        $("#config_response").html("")
+        if($("#config_address").val() == "" || $("#config_port").val() == "") 
+        {   $("#config_status").html("error : address or port are empty")
+            return;
+        }
+        $("#config_status").html("Waiting Klebar response ...")
+        const options = {
+            hostname: 'localhost',
+            port: 8080,
+            path: '/try',
+            method: 'GET'
+        }
+        options.hostname    = $("#config_address").val()
+        options.port        = $("#config_port").val()
+        options.path        = "/try" 
+        console.log(options)
+        const req = http.request(options, res => {
+            console.log(`statusCode: ${res.statusCode}`)
+            $("#config_status").html(`Status code  : ${res.statusCode} ${res.statusMessage} `)
+            res.on('data', message => {
+                console.log("data :" + message)
+                $("#config_response").html(" " + message)
+            })
+        })
+        
+        req.on('error', error => {
+            console.error(error)
+            $("#config_status").html(error)
+        })
+        
+        req.end()
+    }
+</script>
+
+<div>
+    <br> <br>
+    Klebar configuration
+    <br> <br>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Address</span>
+      </div>
+      <input id="config_address"  type="text" class="form-control" aria-label="Command" aria-describedby="inputGroup-sizing-default" value="192.168.0.25">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Port</span>
+      </div>
+      <input id="config_port" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default" value="8080">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text">Status</span>
+      </div>
+      <textarea id="config_status" readonly class="form-control" aria-label="Status"></textarea>
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text">Response</span>
+      </div>
+      <textarea id="config_response" readonly class="form-control" aria-label="Response"></textarea>
+    </div>
+    <br><br>
+    <button type="button" class="btn btn-light" onclick="try_connection()"> Try connection </button>
+    <br>
+
+</div>
