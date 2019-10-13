@@ -32,6 +32,10 @@ int main(void)
 
     httplib::Server server;
 
+    server.Get("/try", [&](const httplib::Request& req, httplib::Response& res) {
+        res.set_content("Klebar is ready", "text/plain");
+    });
+
     server.Get("/halt", [&](const httplib::Request& req, httplib::Response& res) {
         res.set_content("ok, j'ai fini", "text/plain");
         path.stop();
