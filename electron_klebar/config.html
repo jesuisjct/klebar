@@ -11,13 +11,13 @@
         }
         $("#config_status").html("Waiting Klebar response ...")
         const options = {
-            hostname: 'localhost',
-            port: 8080,
+            hostname: '192.168.0.25',
+            port: 8181,
             path: '/try',
             method: 'GET'
         }
         options.hostname    = $("#config_address").val()
-        options.port        = $("#config_port").val()
+        options.port        = parseInt($("#config_port").val(), 10)
         options.path        = "/try" 
         console.log(options)
         const req = http.request(options, res => {
@@ -36,6 +36,7 @@
         
         req.end()
     }
+    
 </script>
 
 <div>
@@ -46,13 +47,13 @@
       <div class="input-group-prepend">
         <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Address</span>
       </div>
-      <input id="config_address"  type="text" class="form-control" aria-label="Command" aria-describedby="inputGroup-sizing-default" value="192.168.0.25">
+      <input id="config_address"  type="text" class="form-control" aria-label="Command" aria-describedby="inputGroup-sizing-default" value="192.168.56.101">
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Port</span>
       </div>
-      <input id="config_port" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default" value="8080">
+      <input id="config_port" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default" value="8181">
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
