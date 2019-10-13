@@ -5,11 +5,9 @@ var http = require('http');
 var $dropDownItems = $('#command_dropdown').children();
 
     $dropDownItems.on('click', function() {
-      //$("#command_canbus").val($dropDownItems.index(this))
       let dropindex = $dropDownItems.index(this)
-      let dropval = $dropDownItems[dropindex]
-      let x = dropval.innerHTML.split("=")
-      $("#command_canbus").val(x[1])
+      let dropval = $dropDownItems[dropindex].innerHTML
+      $("#command_canbus").val(dropval)
   })
 
 
@@ -32,7 +30,9 @@ function send_canbus()
         path: '/do?action=ceci&param=cela',
         method: 'GET'
     }
-    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + $("#command_canbus").val()+ "&param=" + $("#param_canbus").val()
+    let cocan = $("#command_canbus").val()
+    let comcan = cocan.split("=")[1].trim()
+    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + comcan + "&param=" + $("#param_canbus").val()
     console.log(options.path)
     const req = http.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`)
