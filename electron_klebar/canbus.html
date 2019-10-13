@@ -5,8 +5,11 @@ var http = require('http');
 var $dropDownItems = $('#command_dropdown').children();
 
     $dropDownItems.on('click', function() {
-    $("#command_canbus").val($dropDownItems.index(this))
-  //console.log('index: ', $dropDownItems.index(this), 'text: ', this.textContent)
+      //$("#command_canbus").val($dropDownItems.index(this))
+      let dropindex = $dropDownItems.index(this)
+      let dropval = $dropDownItems[dropindex]
+      let x = dropval.innerHTML.split("=")
+      $("#command_canbus").val(x[1])
   })
 
 
@@ -66,38 +69,38 @@ function send_canbus()
         <div id="command_dropdown" class="dropdown-menu">
           <button class="dropdown-item" href="#">Action</button>
 
-          <a class="dropdown-item" href="#">MSG_CO_NMT_CTRL = 0x000  </a>
-          <a class="dropdown-item" href="#">MSG_ODRIVE_HEARTBEAT  </a>
-          <a class="dropdown-item" href="#">MSG_ODRIVE_ESTOP  </a>
-          <a class="dropdown-item" href="#">MSG_GET_MOTOR_ERROR </a>
-          <a class="dropdown-item" href="#">MSG_GET_ENCODER_ERROR </a>
-          <a class="dropdown-item" href="#">MSG_GET_SENSORLESS_ERROR  </a>
-          <a class="dropdown-item" href="#">MSG_SET_AXIS_NODE_ID  </a>
-          <a class="dropdown-item" href="#">MSG_SET_AXIS_REQUESTED_STATE  </a>
-          <a class="dropdown-item" href="#">MSG_SET_AXIS_STARTUP_CONFIG </a>
-          <a class="dropdown-item" href="#">MSG_GET_ENCODER_ESTIMATES </a>
-          <a class="dropdown-item" href="#">MSG_GET_ENCODER_COUNT </a>
-          <a class="dropdown-item" href="#">MSG_SET_CONTROLLER_MODES </a>
-          <a class="dropdown-item" href="#">MSG_SET_INPUT_POS </a>
-          <a class="dropdown-item" href="#">MSG_SET_INPUT_VEL </a>
-          <a class="dropdown-item" href="#">MSG_SET_INPUT_CURRENT </a>
-          <a class="dropdown-item" href="#">MSG_SET_VEL_LIMIT </a>
-          <a class="dropdown-item" href="#">MSG_START_ANTICOGGING   </a>
-          <a class="dropdown-item" href="#">MSG_SET_TRAJ_VEL_LIMIT  </a>
-          <a class="dropdown-item" href="#">MSG_SET_TRAJ_ACCEL_LIMITS </a>
-          <a class="dropdown-item" href="#">MSG_SET_TRAJ_A_PER_CSS  </a>
-          <a class="dropdown-item" href="#">MSG_GET_IQ  </a>
-          <a class="dropdown-item" href="#">MSG_GET_SENSORLESS_ESTIMATES  </a>
-          <a class="dropdown-item" href="#">MSG_RESET_ODRIVE  </a>
-          <a class="dropdown-item" href="#">MSG_GET_VBUS_VOLTAGE  </a>
-          <a class="dropdown-item" href="#">MSG_CLEAR_ERRORS  </a>
-          <a class="dropdown-item" href="#">MSG_CO_HEARTBEAT_CMD = 0x700 </a>
+          <a class="dropdown-item" href="#">CO_NMT_CTRL = 0x000  </a>
+          <a class="dropdown-item" href="#">ODRIVE_HEARTBEAT  =1  </a>
+          <a class="dropdown-item" href="#">ODRIVE_ESTOP  =2  </a>
+          <a class="dropdown-item" href="#">GET_MOTOR_ERROR =3 </a>
+          <a class="dropdown-item" href="#">GET_ENCODER_ERROR =4 </a>
+          <a class="dropdown-item" href="#">GET_SENSORLESS_ERROR  =5  </a>
+          <a class="dropdown-item" href="#">SET_AXIS_NODE_ID  =6  </a>
+          <a class="dropdown-item" href="#">SET_AXIS_REQUESTED_STATE  =7  </a>
+          <a class="dropdown-item" href="#">SET_AXIS_STARTUP_CONFIG =8 </a>
+          <a class="dropdown-item" href="#">GET_ENCODER_ESTIMATES =9 </a>
+          <a class="dropdown-item" href="#">GET_ENCODER_COUNT =10 </a>
+          <a class="dropdown-item" href="#">SET_CONTROLLER_MODES  =11 </a>
+          <a class="dropdown-item" href="#">SET_INPUT_POS =12 </a>
+          <a class="dropdown-item" href="#">SET_INPUT_VEL =13 </a>
+          <a class="dropdown-item" href="#">SET_INPUT_CURRENT =14 </a>
+          <a class="dropdown-item" href="#">SET_VEL_LIMIT =15 </a>
+          <a class="dropdown-item" href="#">START_ANTICOGGING =16   </a>
+          <a class="dropdown-item" href="#">SET_TRAJ_VEL_LIMIT  =17  </a>
+          <a class="dropdown-item" href="#">SET_TRAJ_ACCEL_LIMITS =18 </a>
+          <a class="dropdown-item" href="#">SET_TRAJ_A_PER_CSS  =19  </a>
+          <a class="dropdown-item" href="#">GET_IQ  =20  </a>
+          <a class="dropdown-item" href="#">GET_SENSORLESS_ESTIMATES  =21  </a>
+          <a class="dropdown-item" href="#">RESET_ODRIVE  =22  </a>
+          <a class="dropdown-item" href="#">GET_VBUS_VOLTAGE  =23  </a>
+          <a class="dropdown-item" href="#">CLEAR_ERRORS  =24  </a>
+          <a class="dropdown-item" href="#">CO_HEARTBEAT_CMD = 0x700 </a>
 
 
           <a class="dropdown-item" href="#">Another action</a>
           <a class="dropdown-item" href="#">Something else here</a>
           <div role="separator" class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Separated link</a>
+
         </div>
       </div>
       <input id="command_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
