@@ -16,45 +16,42 @@ function copy_cmd()
   var x = $("#command_dropdown").SelectedIndex
   $("#command_canbus").val(x)
   window.alert(x)
-
 }
+
+function command_canbus(node, command, param)
+{
+  config.path = "/can" + "?node=" + node.trim() + "&command=" + command.trim() + "&param=" + param.trim()
+  console.log(config)
+  const req = http.request(config, res => {
+      console.log(`statusCode: ${res.statusCode}`)
+      $("#status_canbus").html(`Status code  : ${res.statusCode} ${res.statusMessage} `)
+      res.on('data', message => {
+        console.log("data :" + message)
+        $("#response_canbus").html(" " + message)
+      })
+  })
+  
+  req.on('error', error => {
+      console.error(error)
+      $("#status_canbus").html(error)
+  })
+  
+  req.end()
+}
+
 function send_canbus()
 {
     if($("#command_canbus").val() == "") 
     {   $("#status_canbus").html("error : command is empty")
         return;
     }
-    const options = {
-        hostname: '192.168.0.25',
-        port: 8080,
-        path: '/do?action=ceci&param=cela',
-        method: 'GET'
-    }
     let cocan = $("#command_canbus").val()
     let comcan = cocan.split("=")[1]
+    if(!comcan) comcan = cocan
     let parcan = $("#param_canbus").val()
     let paracan = parcan.split("=")[1]
     if(!paracan)  paracan = parcan;
-
-    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + comcan.trim() + "&param=" + paracan.trim()
-    options.hostname = config.hostname
-    options.port = config.port
-    console.log(options)
-    const req = http.request(options, res => {
-        console.log(`statusCode: ${res.statusCode}`)
-        $("#status_canbus").html(`Status code  : ${res.statusCode} ${res.statusMessage} `)
-        res.on('data', message => {
-          console.log("data :" + message)
-          $("#response_canbus").html(" " + message)
-        })
-    })
-    
-    req.on('error', error => {
-        console.error(error)
-        $("#status_canbus").html(error)
-    })
-    
-    req.end()
+    command_canbus($("#node_canbus").val(), comcan, paracan)
 }
 
 </script>

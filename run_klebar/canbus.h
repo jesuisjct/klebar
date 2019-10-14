@@ -23,7 +23,7 @@ public:
     void close_canbus();
 
     std::string execute_command_can(std::string node, std::string command, std::string param);
-
+    std::string execute_command_can(std::string req);  
   private:
     bool                is_connected;  
     struct can_frame    frame;
