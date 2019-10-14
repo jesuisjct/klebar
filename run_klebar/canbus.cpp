@@ -105,7 +105,7 @@ std::string CCanbus::execute_can(const httplib::Request& req)
     if(rtr != "")
     {
         int retr = read(socket_can, &frame, sizeof(struct can_frame));
-        if(retr == sizeof(struct can_frame)
+        if(retr == sizeof(struct can_frame))
         {   int id = frame.can_id;
             int len = frame.can_dlc;
             memcpy(signal, frame.data, len);
