@@ -10,6 +10,7 @@
 #include <sys/ioctl.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
+#include "../cpp-httplib/httplib.h"
 
 #include <string>
 
