@@ -90,7 +90,7 @@ std::string CCanbus::execute_can(const httplib::Request& req)
     if(!is_connected)   open_canbus("can0");
     printf("execute canbus command node=%s command=%s\n", node.c_str(), command.c_str());
     frame.can_id = (std::stoi(node) << 5) + std::stoi(command);
-    if(rtr != "") frame.can_id &= CAN_RTR_FLAG;
+    if(rtr != "") frame.can_id |= CAN_RTR_FLAG;
     printf("can_id=%d\n",frame.can_id);
     frame.can_dlc = 8;
     //if(param != "") signal = std::stoi(param);
