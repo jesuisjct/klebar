@@ -78,7 +78,7 @@ std::string CCanbus::execute_command_can(std::string node, std::string command, 
     else                                    return "ok"; //(std::string("CAN command ") + command + " executed");
 }
 
-std::string CCanbus::execute_can(std::string req)
+std::string CCanbus::execute_can(const httplib::Request& req)
 {
     //std::cout << "node" << node;
     std::string node = req.get_param_value("node");
