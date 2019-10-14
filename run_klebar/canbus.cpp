@@ -60,8 +60,8 @@ std::string CCanbus::execute_command_can(std::string node, std::string command, 
     //std::cout << "node" << node;
     if(!is_connected)   open_canbus("can0");
     printf("execute canbus command node=%s command=%s\n", node.c_str(), command.c_str());
-    frame.can_id = std::stoi(node) << 5 + std::stoi(command);
-    printf("can_id=%d",frame.can_id);
+    frame.can_id = (std::stoi(node) << 5) + std::stoi(command);
+    printf("can_id=%d\n",frame.can_id);
     frame.can_dlc = 8;
     int signal = std::stoi(param);
     frame.data[0] = (uint32_t) signal;
