@@ -104,16 +104,17 @@ std::string CCanbus::execute_can(const httplib::Request& req)
 	frame.data[7] = (uint32_t) 0;
     int retw = write(socket_can, &frame, sizeof(struct can_frame));
     if(rtr != "")
-    {
+    {   printf("rtr\n");
         int retr = read(socket_can, &frame, sizeof(struct can_frame));
         if(retr == sizeof(struct can_frame))
         {   int id = frame.can_id;
             int len = frame.can_dlc;
             memcpy((void *)&signal, frame.data, len);
-            printf("signal returned %d\n", signal);
+            printf("signal returned %d %d\n", signal, retr);
         }
+
     }
-    printf("canbus return %d\n", retw);
+    printf("canbus return %d\n", retr);
     if (retw != sizeof(struct can_frame))   return "erreur"; //(std::string("Error executing CAN command ") + command);
     else                                    return "ok"; //(std::string("CAN command ") + command + " executed");
 }
