@@ -20,7 +20,7 @@ function copy_cmd()
 
 function command_canbus(node, command, param)
 {
-  config.path = "/can" + "?node=" + node.trim() + "&command=" + command.trim() + "&param=" + param.trim()
+  config.path = "/can" + "?node=" + node.trim() + "&command=" + command.trim() + "&param=" + param.trim() + "&rtr=true"
   console.log(config)
   const req = http.request(config, res => {
       console.log(`statusCode: ${res.statusCode}`)
