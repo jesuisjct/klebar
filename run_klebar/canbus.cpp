@@ -112,7 +112,7 @@ std::string CCanbus::execute_can(const httplib::Request& req)
             printf("signal returned %d\n", signal);
         }
     }
-    printf("canbus return %d\n", ret);
+    printf("canbus return %d\n", retw);
     if (retw != sizeof(struct can_frame))   return "erreur"; //(std::string("Error executing CAN command ") + command);
     else                                    return "ok"; //(std::string("CAN command ") + command + " executed");
 }
