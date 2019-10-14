@@ -1,13 +1,49 @@
 <script type="text/javascript">
 var http = require('http'); 
 
+/*
+        CTRL_MODE_VOLTAGE_CONTROL = 0,
+        CTRL_MODE_CURRENT_CONTROL = 1,
+        CTRL_MODE_VELOCITY_CONTROL = 2,
+        CTRL_MODE_POSITION_CONTROL = 3,
+        CTRL_MODE_TRAJECTORY_CONTROL = 4
 
-var $dropDownItems = $('#command_dropdown').children();
+        AXIS_STATE_UNDEFINED = 0,           //<! will fall through to idle
+        AXIS_STATE_IDLE = 1,                //<! disable PWM and do nothing
+        AXIS_STATE_STARTUP_SEQUENCE = 2, //<! the actual sequence is defined by the config.startup_... flags
+        AXIS_STATE_FULL_CALIBRATION_SEQUENCE = 3,   //<! run all calibration procedures, then idle
+        AXIS_STATE_MOTOR_CALIBRATION = 4,   //<! run motor calibration
+        AXIS_STATE_SENSORLESS_CONTROL = 5,  //<! run sensorless control
+        AXIS_STATE_ENCODER_INDEX_SEARCH = 6, //<! run encoder index search
+        AXIS_STATE_ENCODER_OFFSET_CALIBRATION = 7, //<! run encoder offset calibration
+        AXIS_STATE_CLOSED_LOOP_CONTROL = 8,  //<! run closed loop control
+        AXIS_STATE_LOCKIN_SPIN = 9,       //<! run lockin spin
+        AXIS_STATE_ENCODER_DIR_FIND = 10,
 
-    $dropDownItems.on('click', function() {
+        ERROR_NONE = 0x00,
+        ERROR_INVALID_STATE = 0x01, //<! an invalid state was requested
+        ERROR_DC_BUS_UNDER_VOLTAGE = 0x02,
+        ERROR_DC_BUS_OVER_VOLTAGE = 0x04,
+        ERROR_CURRENT_MEASUREMENT_TIMEOUT = 0x08,
+        ERROR_BRAKE_RESISTOR_DISARMED = 0x10, //<! the brake resistor was unexpectedly disarmed
+        ERROR_MOTOR_DISARMED = 0x20, //<! the motor was unexpectedly disarmed
+        ERROR_MOTOR_FAILED = 0x40, // Go to motor.hpp for information, check odrvX.axisX.motor.error for error value 
+        ERROR_SENSORLESS_ESTIMATOR_FAILED = 0x80,
+        ERROR_ENCODER_FAILED = 0x100, // Go to encoder.hpp for information, check odrvX.axisX.encoder.error for error value
+        ERROR_CONTROLLER_FAILED = 0x200,
+        ERROR_POS_CTRL_DURING_SENSORLESS = 0x400,
+        ERROR_WATCHDOG_TIMER_EXPIRED = 0x800,
+
+*/
+var $commanddropDownItems = $('#command_dropdown').children();
+$commanddropDownItems.on('click', function() {
       $("#command_canbus").val($(this).html())
-  })
+})
 
+var $statedropDownItems = $('#state_dropdown').children();
+$statedropDownItems.on('click', function() {
+      $("#param_canbus").val($(this).html())
+})
 
 function copy_cmd()
 {
@@ -30,7 +66,11 @@ function send_canbus()
     }
     let cocan = $("#command_canbus").val()
     let comcan = cocan.split("=")[1].trim()
-    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + comcan + "&param=" + $("#param_canbus").val()
+    let parcan = $("#param_canbus").val()
+    let paracan = parcan.split("=")[1].trim()
+    if(!paracan)  paracan = parcan;
+
+    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + comcan + "&param=" + paracan
     console.log(options.path)
     const req = http.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`)
@@ -63,10 +103,8 @@ function send_canbus()
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+        <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Command</button>
         <div id="command_dropdown" class="dropdown-menu">
-          <button class="dropdown-item" href="#">Action</button>
-
           <a class="dropdown-item" href="#">CO_NMT_CTRL = 0x000  </a>
           <a class="dropdown-item" href="#">ODRIVE_HEARTBEAT  =1  </a>
           <a class="dropdown-item" href="#">ODRIVE_ESTOP  =2  </a>
@@ -93,19 +131,31 @@ function send_canbus()
           <a class="dropdown-item" href="#">GET_VBUS_VOLTAGE  =23  </a>
           <a class="dropdown-item" href="#">CLEAR_ERRORS  =24  </a>
           <a class="dropdown-item" href="#">CO_HEARTBEAT_CMD = 0x700 </a>
-
-
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
           <div role="separator" class="dropdown-divider"></div>
-
         </div>
       </div>
       <input id="command_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
     </div>    
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">parameter</span>
+        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Parameter</span>
+        <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">State</button>
+        <div id="state_dropdown" class="dropdown-menu">
+          <button class="dropdown-item" href="#">State</button>
+
+          <a class="dropdown-item" href="#"></a>AXIS_STATE_UNDEFINED = 0  </a>
+          <a class="dropdown-item" href="#"></a>AXIS_STATE_IDLE = 1  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_STARTUP_SEQUENCE = 2  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_FULL_CALIBRATION_SEQUENCE = 3  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_MOTOR_CALIBRATION = 4  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_SENSORLESS_CONTROL = 5  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_INDEX_SEARCH = 6  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_OFFSET_CALIBRATION = 7  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_CLOSED_LOOP_CONTROL = 8  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_LOCKIN_SPIN = 9  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_DIR_FIND = 10  </a>
+        </div>
+      
       </div>
       <input id="param_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
     </div>

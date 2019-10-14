@@ -1,0 +1,1 @@
+command_klebar.o: command_klebar.cpp ../cpp-httplib/httplib.h

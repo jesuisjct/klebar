@@ -12,7 +12,7 @@
         $("#config_status").html("Waiting Klebar response ...")
         const options = {
             hostname: '192.168.0.25',
-            port: 8181,
+            port: 8080,
             path: '/try',
             method: 'GET'
         }
@@ -47,13 +47,13 @@
       <div class="input-group-prepend">
         <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Address</span>
       </div>
-      <input id="config_address"  type="text" class="form-control" aria-label="Command" aria-describedby="inputGroup-sizing-default" value="192.168.56.101">
+      <input id="config_address"  type="text" class="form-control" aria-label="Command" aria-describedby="inputGroup-sizing-default" value="192.168.0.25">
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Port</span>
       </div>
-      <input id="config_port" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default" value="8181">
+      <input id="config_port" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default" value="8080">
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
