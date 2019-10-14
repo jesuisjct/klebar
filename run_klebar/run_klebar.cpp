@@ -56,7 +56,7 @@ int main(void)
         std::string command     = req.get_param_value("command");
         std::string param       = req.get_param_value("param");
         printf("can : node=%s   command=%s    param=%s\n", node.c_str(), command.c_str(), param.c_str());
-        ret = canbus.execute_command_can(node, command, param);
+        //ret = canbus.execute_command_can(node, command, param);
         ret = canbus.execute_can(req);
         res.set_content(ret, "text/plain");
     });
