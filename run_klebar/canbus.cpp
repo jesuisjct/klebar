@@ -59,7 +59,7 @@ std::string CCanbus::execute_command_can(std::string node, std::string command, 
 {
     //std::cout << "node" << node;
     if(!is_connected)   open_canbus("can0");
-    printf("execute can command node=%s command=%s\n", node.c_str(), command.c_str());
+    printf("execute canbus command node=%s command=%s\n", node.c_str(), command.c_str());
     frame.can_id = std::stoi(node) << 5 + std::stoi(command);
     frame.can_dlc = 8;
     int signal = std::stoi(param);
@@ -72,6 +72,7 @@ std::string CCanbus::execute_command_can(std::string node, std::string command, 
 	frame.data[6] = (uint32_t) 0;
 	frame.data[7] = (uint32_t) 0;
     int ret = write(socket_can, &frame, sizeof(struct can_frame));
+    printf("canbus return %d\n", ret);
     if (ret != sizeof(struct can_frame))    return "erreur"; //(std::string("Error executing CAN command ") + command);
     else                                    return "ok"; //(std::string("CAN command ") + command + " executed");
 }

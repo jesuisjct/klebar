@@ -25,7 +25,7 @@ function send_canbus()
         return;
     }
     const options = {
-        hostname: 'localhost',
+        hostname: '192.168.0.25',
         port: 8080,
         path: '/do?action=ceci&param=cela',
         method: 'GET'
@@ -37,7 +37,9 @@ function send_canbus()
     if(!paracan)  paracan = parcan;
 
     options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + comcan + "&param=" + paracan
-    console.log(options.path)
+    options.hostname = config.hostname
+    options.port = config.port
+    console.log(options)
     const req = http.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`)
         $("#status_canbus").html(`Status code  : ${res.statusCode} ${res.statusMessage} `)
