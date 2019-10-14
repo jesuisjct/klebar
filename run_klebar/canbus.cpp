@@ -80,6 +80,7 @@ std::string CCanbus::execute_command_can(std::string node, std::string command, 
 
 std::string CCanbus::execute_can(const httplib::Request& req)
 {   int signal = 0;
+    int retr;
     //std::cout << "node" << node;
     std::string node    = req.get_param_value("node");
     std::string command = req.get_param_value("command");
@@ -105,7 +106,7 @@ std::string CCanbus::execute_can(const httplib::Request& req)
     int retw = write(socket_can, &frame, sizeof(struct can_frame));
     if(rtr != "")
     {   printf("rtr\n");
-        int retr = read(socket_can, &frame, sizeof(struct can_frame));
+        retr = read(socket_can, &frame, sizeof(struct can_frame));
         if(retr == sizeof(struct can_frame))
         {   int id = frame.can_id;
             int len = frame.can_dlc;
