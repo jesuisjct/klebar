@@ -110,7 +110,7 @@ std::string CCanbus::execute_can(const httplib::Request& req)
         if(retr == sizeof(struct can_frame))
         {   int id = frame.can_id;
             int len = frame.can_dlc;
-            memcpy((void *)&signal, frame.data, len);
+            memcpy((void *)&signal, frame.data, 4);
             printf("signal returned %d %d\n", signal, retr);
         }
 
