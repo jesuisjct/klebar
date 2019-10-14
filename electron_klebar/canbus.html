@@ -31,12 +31,12 @@ function send_canbus()
         method: 'GET'
     }
     let cocan = $("#command_canbus").val()
-    let comcan = cocan.split("=")[1].trim()
+    let comcan = cocan.split("=")[1]
     let parcan = $("#param_canbus").val()
-    let paracan = parcan.split("=")[1].trim()
+    let paracan = parcan.split("=")[1]
     if(!paracan)  paracan = parcan;
 
-    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + comcan + "&param=" + paracan
+    options.path = "/can" + "?node=" + $("#node_canbus").val() + "&command=" + comcan.trim() + "&param=" + paracan.trim()
     options.hostname = config.hostname
     options.port = config.port
     console.log(options)
@@ -110,9 +110,8 @@ function send_canbus()
         <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">State</button>
         <div id="state_dropdown" class="dropdown-menu">
           <button class="dropdown-item" href="#">State</button>
-
-          <a class="dropdown-item" href="#"></a>AXIS_STATE_UNDEFINED = 0  </a>
-          <a class="dropdown-item" href="#"></a>AXIS_STATE_IDLE = 1  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_UNDEFINED = 0  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_IDLE = 1  </a>
           <a class="dropdown-item" href="#">AXIS_STATE_STARTUP_SEQUENCE = 2  </a>
           <a class="dropdown-item" href="#">AXIS_STATE_FULL_CALIBRATION_SEQUENCE = 3  </a>
           <a class="dropdown-item" href="#">AXIS_STATE_MOTOR_CALIBRATION = 4  </a>
