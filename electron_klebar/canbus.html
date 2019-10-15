@@ -20,6 +20,10 @@ function copy_cmd()
 
 function command_canbus(node, command, rtr, param1, param2)
 { if(node)    node = node.trim()
+  else
+  { $("#status_canbus").html(`Error node is empty `)
+    return
+  }
   if(command) command = command.trim()
   if(rtr)     rtr = rtr.trim()
   else        rtr = ""
@@ -38,7 +42,7 @@ function command_canbus(node, command, rtr, param1, param2)
   
   req.on('error', error => {
       console.error(error)
-      $("#status_canbus").html(error)
+      $("#status_canbus").html("Error :" + error)
   })
   
   req.end()
@@ -56,8 +60,7 @@ function send_canbus()
     let par1 = $("#param1_canbus").val()
     let param1 = par1.split(":")[1]
     if(!param1)  param1 = par1
-    let param2 = $("#param2_canbus").val()  
-    
+    let param2 = $("#param2_canbus").val()   
     let parrtr = cocan.split(":")[2]
 
     command_canbus($("#node_canbus").val(), comcan, parrtr, param1, param2)
