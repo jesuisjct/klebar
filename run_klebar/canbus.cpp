@@ -79,9 +79,11 @@ std::string CCanbus::execute_command_can(std::string node, std::string command, 
 }
 
 std::string CCanbus::execute_can(const httplib::Request& req)
-{   int signal = 0;
-    int retr;
-    //std::cout << "node" << node;
+{   int         signal = 0;
+    int         signal2 =0;
+    int         ret;
+    std::string response;
+
     std::string node    = req.get_param_value("node");
     std::string command = req.get_param_value("command");
     std::string rtr     = req.get_param_value("rtr");
@@ -103,21 +105,22 @@ std::string CCanbus::execute_can(const httplib::Request& req)
 	frame.data[5] = (uint32_t) 0;
 	frame.data[6] = (uint32_t) 0;
 	frame.data[7] = (uint32_t) 0;
-    int retw = write(socket_can, &frame, sizeof(struct can_frame));
-    if(rtr != "")
-    {   printf("rtr\n");
-        retr = read(socket_can, &frame, sizeof(struct can_frame));
-        if(retr == sizeof(struct can_frame))
-        {   int id = frame.can_id;
-            int len = frame.can_dlc;
-            memcpy((void *)&signal, frame.data, 4);
-            printf("signal returned %d %d\n", signal, retr);
-            std::string s = std::to_string(signal);
-            return s;
+    ret = write(socket_can, &frame, sizeof(struct can_frame));
+    if(ret == sizeof(struct can_frame) )
+    {   if(rtr != "")
+        {   ret = read(socket_can, &frame, sizeof(struct can_frame));
+            if(ret == sizeof(struct can_frame))
+            {   int id = frame.can_id;
+                int len = frame.can_dlc;
+                memcpy((void *)&signal, &frame.data[0], 4);
+                memcpy((void *)&signal2, &frame.data[4], 4);
+                response = "ok :" + std::to_string(signal) + ":" + std::to_string(signal2);
+            }
+            else    response = "Error read :" + std::to_string(ret);           
         }
-
+        else response = "ok :" + std::to_string(ret);
     }
-    printf("canbus return %d\n", retr);
-    if (retr != sizeof(struct can_frame))   return "erreur"; //(std::string("Error executing CAN command ") + command);
-    else                                    return "ok"; //(std::string("CAN command ") + command + " executed");
+    else   response = "Error write :" + std::to_string(ret); 
+    printf("response :%s\n", response);
+    return response;
 }
