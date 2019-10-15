@@ -20,6 +20,10 @@ function copy_cmd()
 
 function command_canbus(node, command, rtr, param1, param2)
 { if(node)    node = node.trim()
+  else
+  { $("#status_canbus").html(`Error node is empty `)
+    return
+  }
   if(command) command = command.trim()
   if(rtr)     rtr = rtr.trim()
   else        rtr = ""
