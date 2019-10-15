@@ -20,7 +20,7 @@ int CCanbus::open_canbus(std::string port)
     if (ioctl(socket_can, SIOCGIFINDEX, &ifr) < 0) return (-1);
 
     addr.can_ifindex = ifr.ifr_ifindex;
-    fcntl(socket_can, F_SETFL, O_NONBLOCK);
+    //fcntl(socket_can, F_SETFL, O_NONBLOCK);
 
     if (bind(socket_can, (struct sockaddr *)&addr, sizeof(addr)) < 0)  return (-1);
     is_connected = true;
@@ -116,6 +116,6 @@ std::string CCanbus::execute_can(const httplib::Request& req)
 
     }
     printf("canbus return %d\n", retr);
-    if (retw != sizeof(struct can_frame))   return "erreur"; //(std::string("Error executing CAN command ") + command);
+    if (retr != sizeof(struct can_frame))   return "erreur"; //(std::string("Error executing CAN command ") + command);
     else                                    return "ok"; //(std::string("CAN command ") + command + " executed");
 }
