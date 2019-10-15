@@ -8,7 +8,7 @@ $commanddropDownItems.on('click', function() {
 
 var $statedropDownItems = $('#state_dropdown').children();
 $statedropDownItems.on('click', function() {
-      $("#param_canbus").val($(this).html())
+      $("#param1_canbus").val($(this).html())
 })
 
 function copy_cmd()
@@ -18,13 +18,14 @@ function copy_cmd()
   window.alert(x)
 }
 
-function command_canbus(node, command, rtr, param)
+function command_canbus(node, command, rtr, param1, param2)
 { if(node)    node = node.trim()
   if(command) command = command.trim()
   if(rtr)     rtr = rtr.trim()
   else        rtr = ""
-  if(param)   param = param.trim()
-  config.path = "/can" + "?node=" + node + "&command=" + command + "&param=" + param + "&rtr=" + rtr
+  if(param1)   param1 = param1.trim()
+  if(param2)   param2 = param2.trim()
+  config.path = "/can" + "?node=" + node + "&command=" + command + "&param1=" + param1 + "&param2=" + param2 + "&rtr=" + rtr
   console.log(config)
   const req = http.request(config, res => {
       console.log(`statusCode: ${res.statusCode}`)
@@ -52,12 +53,14 @@ function send_canbus()
     let cocan = $("#command_canbus").val()
     let comcan = cocan.split(":")[1]
     if(!comcan) comcan = cocan
-    let parcan = $("#param_canbus").val()
-    let paracan = parcan.split(":")[1]
-    if(!paracan)  paracan = parcan;
+    let par1 = $("#param1_canbus").val()
+    let param1 = par1.split(":")[1]
+    if(!param1)  param1 = par1
+    let param2 = $("#param2_canbus").val()  
+    
     let parrtr = cocan.split(":")[2]
 
-    command_canbus($("#node_canbus").val(), comcan, parrtr, paracan)
+    command_canbus($("#node_canbus").val(), comcan, parrtr, param1, param2)
 }
 
 </script>
@@ -107,10 +110,11 @@ function send_canbus()
       </div>
       <input id="command_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
     </div>    
+    
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Parameter</span>
-        <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">State</button>
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">State</button>
         <div id="state_dropdown" class="dropdown-menu">
           <button class="dropdown-item" href="#">State</button>
           <a class="dropdown-item" href="#">AXIS_STATE_UNDEFINED : 0  </a>
@@ -124,10 +128,16 @@ function send_canbus()
           <a class="dropdown-item" href="#">AXIS_STATE_CLOSED_LOOP_CONTROL : 8  </a>
           <a class="dropdown-item" href="#">AXIS_STATE_LOCKIN_SPIN : 9  </a>
           <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_DIR_FIND : 10  </a>
-        </div>
-      
+        </div>    
       </div>
-      <input id="param_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
+      <input id="param1_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span style="width: 120px; " class="input-group-text" id="inputGroup-sizing-default">Parameter2</span>
+      </div>
+      <input id="param2_canbus" type="text" class="form-control" aria-label="Parameter" aria-describedby="inputGroup-sizing-default">
     </div>
 
     <br><br>

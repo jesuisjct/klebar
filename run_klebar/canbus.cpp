@@ -79,7 +79,7 @@ std::string CCanbus::execute_command_can(std::string node, std::string command, 
 }
 
 std::string CCanbus::execute_can(const httplib::Request& req)
-{   int         signal = 0;
+{   int         signal1 = 0;
     int         signal2 =0;
     int         ret;
     std::string response;
@@ -87,24 +87,27 @@ std::string CCanbus::execute_can(const httplib::Request& req)
     std::string node    = req.get_param_value("node");
     std::string command = req.get_param_value("command");
     std::string rtr     = req.get_param_value("rtr");
-    std::string param   = req.get_param_value("param");
+    std::string param1   = req.get_param_value("param1");
+    std::string param2   = req.get_param_value("param2");
 
     if(!is_connected)   open_canbus("can0");
     printf("execute canbus command node=%s command=%s\n", node.c_str(), command.c_str());
     frame.can_id = (std::stoi(node) << 5) + std::stoi(command);
     if(rtr != "") frame.can_id |= CAN_RTR_FLAG;
-    printf("can_id=%d\n",frame.can_id);
+    //printf("can_id=%d\n",frame.can_id);
     frame.can_dlc = 8;
-    if(param != "") signal = std::stoi(param);
-    else            signal = 0;
-    frame.data[0] = (uint32_t) signal;
-	frame.data[1] = (uint32_t) signal >> 8;
-	frame.data[2] = (uint32_t) signal >> 16;
-	frame.data[3] = (uint32_t) signal >> 24;
-	frame.data[4] = (uint32_t) 0;
-	frame.data[5] = (uint32_t) 0;
-	frame.data[6] = (uint32_t) 0;
-	frame.data[7] = (uint32_t) 0;
+    if(param1 != "")    signal1 = std::stoi(param1);
+    else                signal1 = 0;
+    if(param2 != "")    signal2 = std::stoi(param2);
+    else                signal2 = 0; 
+    frame.data[0] = (uint32_t) signal1;
+	frame.data[1] = (uint32_t) signal1 >> 8;
+	frame.data[2] = (uint32_t) signal1 >> 16;
+	frame.data[3] = (uint32_t) signal1 >> 24;
+	frame.data[4] = (uint32_t) signal2;
+	frame.data[5] = (uint32_t) signal >> 8;
+	frame.data[6] = (uint32_t) signal >> 16;
+	frame.data[7] = (uint32_t) signal >> 24;
     ret = write(socket_can, &frame, sizeof(struct can_frame));
     if(ret == sizeof(struct can_frame) )
     {   if(rtr != "")
@@ -112,15 +115,15 @@ std::string CCanbus::execute_can(const httplib::Request& req)
             if(ret == sizeof(struct can_frame))
             {   int id = frame.can_id;
                 int len = frame.can_dlc;
-                memcpy((void *)&signal, &frame.data[0], 4);
+                memcpy((void *)&signal1, &frame.data[0], 4);
                 memcpy((void *)&signal2, &frame.data[4], 4);
-                response = "ok :" + std::to_string(signal) + ":" + std::to_string(signal2);
+                response = "ok :" + std::to_string(signal1) + ":" + std::to_string(signal2);
             }
             else    response = "Error read :" + std::to_string(ret);           
         }
         else response = "ok :" + std::to_string(ret);
     }
     else   response = "Error write :" + std::to_string(ret); 
-    printf("response :%s\n", response);
+    printf("response :%s\n", response.c_str());
     return response;
 }
