@@ -112,6 +112,8 @@ std::string CCanbus::execute_can(const httplib::Request& req)
             int len = frame.can_dlc;
             memcpy((void *)&signal, frame.data, 4);
             printf("signal returned %d %d\n", signal, retr);
+            std::string s = std::to_string(signal);
+            return s;
         }
 
     }
