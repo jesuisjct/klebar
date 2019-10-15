@@ -93,8 +93,8 @@ std::string CCanbus::execute_can(const httplib::Request& req)
     if(rtr != "") frame.can_id |= CAN_RTR_FLAG;
     printf("can_id=%d\n",frame.can_id);
     frame.can_dlc = 8;
-    //if(param != "") signal = std::stoi(param);
-    //else            signal = 0;
+    if(param != "") signal = std::stoi(param);
+    else            signal = 0;
     frame.data[0] = (uint32_t) signal;
 	frame.data[1] = (uint32_t) signal >> 8;
 	frame.data[2] = (uint32_t) signal >> 16;

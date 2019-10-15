@@ -19,8 +19,12 @@ function copy_cmd()
 }
 
 function command_canbus(node, command, rtr, param)
-{
-  config.path = "/can" + "?node=" + node.trim() + "&command=" + command.trim() + "&param=" + param.trim() + "&rtr=true"
+{ if(node)    node = node.trim()
+  if(command) command = command.trim()
+  if(rtr)     rtr = rtr.trim()
+  else        rtr = ""
+  if(param)   param = param.trim()
+  config.path = "/can" + "?node=" + node + "&command=" + command + "&param=" + param + "&rtr=" + rtr
   console.log(config)
   const req = http.request(config, res => {
       console.log(`statusCode: ${res.statusCode}`)
@@ -109,17 +113,17 @@ function send_canbus()
         <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">State</button>
         <div id="state_dropdown" class="dropdown-menu">
           <button class="dropdown-item" href="#">State</button>
-          <a class="dropdown-item" href="#">AXIS_STATE_UNDEFINED = 0  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_IDLE = 1  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_STARTUP_SEQUENCE = 2  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_FULL_CALIBRATION_SEQUENCE = 3  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_MOTOR_CALIBRATION = 4  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_SENSORLESS_CONTROL = 5  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_INDEX_SEARCH = 6  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_OFFSET_CALIBRATION = 7  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_CLOSED_LOOP_CONTROL = 8  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_LOCKIN_SPIN = 9  </a>
-          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_DIR_FIND = 10  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_UNDEFINED : 0  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_IDLE : 1  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_STARTUP_SEQUENCE : 2  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_FULL_CALIBRATION_SEQUENCE : 3  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_MOTOR_CALIBRATION : 4  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_SENSORLESS_CONTROL : 5  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_INDEX_SEARCH : 6  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_OFFSET_CALIBRATION : 7  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_CLOSED_LOOP_CONTROL : 8  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_LOCKIN_SPIN : 9  </a>
+          <a class="dropdown-item" href="#">AXIS_STATE_ENCODER_DIR_FIND : 10  </a>
         </div>
       
       </div>
