@@ -17,12 +17,15 @@ function copy_cmd()
   $("#command_canbus").val(x)
   window.alert(x)
 }
+
 function clear_status()
-{
-  $("#status_canbus").html("")
+{ $("#status_canbus").html("")
   $("#response_canbus").html("")
 }
 
+function set_clear_status()
+{ setTimeout(clear_status, 10000)
+}
 
 function command_canbus(node, command, rtr, param1, param2)
 { if(node)    node = node.trim()
@@ -42,7 +45,7 @@ function command_canbus(node, command, rtr, param1, param2)
   const req = http.request(config, res => {
       console.log(`statusCode: ${res.statusCode}`)
       $("#status_canbus").html(`Status code  : ${res.statusCode} ${res.statusMessage} `)
-      setTimeout(clear_status, 10000)
+      set_clear_status()
       res.on('data', message => {
         console.log("data :" + message)
         $("#response_canbus").html(" " + message)
@@ -52,7 +55,7 @@ function command_canbus(node, command, rtr, param1, param2)
   req.on('error', error => {
       console.error(error)
       $("#status_canbus").html(error)
-      setTimeout(clear_status, 10000)
+      set_clear_status()
   })
   
   req.end()
@@ -62,7 +65,7 @@ function send_canbus()
 {
     if($("#command_canbus").val() == "") 
     {   $("#status_canbus").html("error : command is empty")
-        setTimeout(clear_status, 10000)
+        set_clear_status()
         return;
     }
     let cocan = $("#command_canbus").val()
