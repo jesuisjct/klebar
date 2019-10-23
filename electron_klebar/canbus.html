@@ -18,6 +18,15 @@ function copy_cmd()
   window.alert(x)
 }
 
+function clear_status()
+{ $("#status_canbus").html("")
+  $("#response_canbus").html("")
+}
+
+function set_clear_status()
+{ setTimeout(clear_status, 10000)
+}
+
 function command_canbus(node, command, rtr, param1, param2)
 { if(node)    node = node.trim()
   else
@@ -25,15 +34,18 @@ function command_canbus(node, command, rtr, param1, param2)
     return
   }
   if(command) command = command.trim()
-  if(rtr)     rtr = rtr.trim()
-  else        rtr = ""
-  if(param1)   param1 = param1.trim()
-  if(param2)   param2 = param2.trim()
+  if(rtr)       rtr = rtr.trim()
+  else          rtr = ""
+  if(param1)    param1 = param1.trim()
+  else          param1 = "" 
+  if(param2)    param2 = param2.trim()
+  else          param2 = ""
   config.path = "/can" + "?node=" + node + "&command=" + command + "&param1=" + param1 + "&param2=" + param2 + "&rtr=" + rtr
   console.log(config)
   const req = http.request(config, res => {
       console.log(`statusCode: ${res.statusCode}`)
       $("#status_canbus").html(`Status code  : ${res.statusCode} ${res.statusMessage} `)
+      set_clear_status()
       res.on('data', message => {
         console.log("data :" + message)
         $("#response_canbus").html(" " + message)
@@ -52,6 +64,7 @@ function send_canbus()
 {
     if($("#command_canbus").val() == "") 
     {   $("#status_canbus").html("error : command is empty")
+        set_clear_status()
         return;
     }
     let cocan = $("#command_canbus").val()
@@ -82,7 +95,7 @@ function send_canbus()
       <div class="input-group-prepend">
         <button id="cmd" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Command</button>
         <div id="command_dropdown" class="dropdown-menu">
-          <a class:"dropdown-item" href="#">CO_NMT_CTRL : 0x000  </a>
+          <a class="dropdown-item" href="#">CO_NMT_CTRL : 0x000  </a>
           <a class="dropdown-item" href="#">ODRIVE_HEARTBEAT  :1  </a>
           <a class="dropdown-item" href="#">ODRIVE_ESTOP  :2  </a>
           <a class="dropdown-item" href="#">GET_MOTOR_ERROR :3:rtr </a>
