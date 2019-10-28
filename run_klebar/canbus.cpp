@@ -105,9 +105,9 @@ std::string CCanbus::execute_can(const httplib::Request& req)
 	frame.data[2] = (uint32_t) signal1 >> 16;
 	frame.data[3] = (uint32_t) signal1 >> 24;
 	frame.data[4] = (uint32_t) signal2;
-	frame.data[5] = (uint32_t) signal >> 8;
-	frame.data[6] = (uint32_t) signal >> 16;
-	frame.data[7] = (uint32_t) signal >> 24;
+	frame.data[5] = (uint32_t) signal2 >> 8;
+	frame.data[6] = (uint32_t) signal2 >> 16;
+	frame.data[7] = (uint32_t) signal2 >> 24;
     ret = write(socket_can, &frame, sizeof(struct can_frame));
     if(ret == sizeof(struct can_frame) )
     {   if(rtr != "")
